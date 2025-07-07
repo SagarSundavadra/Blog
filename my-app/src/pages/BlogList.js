@@ -5,18 +5,16 @@ import "./BlogList.css";
 
 const BlogList = () => {
   const [articles, setArticles] = useState([]);
-  const [api, setApi] = useState("");
   useEffect(() => {
-    setApi(process.env.REACT_APP_API);
-      axios
-        .get(`${api}/api/articles?populate=*`)
-        .then((res) => {
-          setArticles(res.data.data);
-        })
-        .catch((err) => {
-          console.error("Error fetching articles:", err);
-        });
-  }, [api]);
+    const API = process.env.REACT_APP_API;
+    axios
+      .get(`${API}/api/articles?populate=*`)
+      .then(res => {
+        setArticles(res.data.data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
   return (
     <div className="blog-list-container">
       <h1 className="blog-list-title">LumezAI Blog</h1>
@@ -40,7 +38,7 @@ const BlogList = () => {
 
           const imageUrl = coverImage?.url;
           return (
-            <div className="blog-card">
+            <div key={id} className="blog-card">
               {imageUrl && (
                 <div
                   className="blog-card-image"
